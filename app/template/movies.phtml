@@ -1,0 +1,22 @@
+<?php /** @var \App\Controller\Movies $controller */
+namespace App\template;?>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Year</th>
+        <th>Duration</th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php foreach ($controller->getFilms() as $filmInfo) : ?>
+        <tr>
+            <td><?= $filmInfo['movies_id'] ?></td>
+            <td><?= $filmInfo['movies_title'] ?></td>
+            <td><?= $filmInfo['year_of_issue'] ?></td>
+            <td><?= $filmInfo['duration_min'] ?></td>
+        </tr>
+    <?php endforeach; ?>
+    </tbody>
+</table>

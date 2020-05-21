@@ -1,0 +1,26 @@
+<?php /** @var \App\View\Renderer $this */ ?>
+<!doctype html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Php project</title>
+    <meta name="description" content="PHP framework">
+    <meta name="author" content="Andrey Mazurenko">
+    <link rel="stylesheet" href="../../pub/css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="wrapper">
+    <menu>
+        <li>
+            <a href="/">Home Page</a>
+        </li>
+        <li>
+            <a href="/Actors/">Actors</a>
+        </li>
+    </menu>
+    <?php include $this->getTemplate() ?>
+</div>
+</body>
+</html>
