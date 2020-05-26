@@ -1,22 +1,49 @@
 <?php /** @var \App\Controller\movies $controller */
 namespace App\template;?>
-<table>
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Year</th>
-        <th>Duration</th>
-    </tr>
-    </thead>
-    <tbody>
-    <?php foreach ($controller->getFilms() as $filmInfo) : ?>
+<menu class="nav">
+    <li>
+        <a href="/">Home Page</a>
+    </li>
+    <li>
+        <a href="/actors/">Actors</a>
+    </li>
+</menu>
+<div class="content">
+    <table class="table">
+        <thead>
         <tr>
-            <td><?= $filmInfo['movies_id'] ?></td>
-            <td><?= $filmInfo['movies_title'] ?></td>
-            <td><?= $filmInfo['year_of_issue'] ?></td>
-            <td><?= $filmInfo['duration_min'] ?></td>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Year</th>
+            <th>Duration</th>
+            <th>Budget</th>
+            <th>Producer id</th>
         </tr>
-    <?php endforeach; ?>
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+        <?php foreach ($controller->getFilms() as $filmInfo) : ?>
+            <tr>
+                <td><?= $filmInfo['movies_id'] ?></td>
+                <td><?= $filmInfo['movies_title'] ?></td>
+                <td><?= $filmInfo['year_of_issue'] ?></td>
+                <td><?= $filmInfo['duration_min'] ?></td>
+                <td><?= $filmInfo['budget'] ?></td>
+                <td><?= $filmInfo['producer_id'] ?></td>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
+<form id="column-select">
+    <?php
+    echo "<select class='select' name='producer_name'><option>Select a producer:</option>";
+        foreach ($controller->getProducers() as $producer) {
+        echo "<option value='" . $producer['producer_id'] . "'>" . $producer['producer_name'] . '</option>';
+        }
+        echo '</select>';
+        ?>
+</form>
+
+
+
+

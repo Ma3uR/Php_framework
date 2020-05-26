@@ -1,20 +1,28 @@
 <?php /** @var \App\Controller\actors $controller */
 namespace App\template;?>
-<table>
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Date of birth</th>
-    </tr>
-    </thead>
-    <tbody>
-    <?php foreach ($controller->getActors() as $actorsInfo) : ?>
+<menu class="nav">
+    <li>
+        <a href="/">Back to movies</a>
+    </li>
+</menu>
+<div class="content">
+    <table class="table">
+        <thead>
         <tr>
-            <td><?= $actorsInfo['actor_id'] ?></td>
-            <td><?= $actorsInfo['first_name'] . ' ' . $actorsInfo['last_name'] ?></td>
-            <td><?= $actorsInfo['dob'] ?></td>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Date of birth</th>
         </tr>
-    <?php endforeach; ?>
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+        <?php foreach ($controller->getActors() as $actorsInfo) : ?>
+            <tr>
+                <td><?= $actorsInfo['actor_id'] ?></td>
+                <td><?= $actorsInfo['first_name'] . ' ' . $actorsInfo['last_name'] ?></td>
+                <td><?= $actorsInfo['dob'] ?></td>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+    </table>
+</div>

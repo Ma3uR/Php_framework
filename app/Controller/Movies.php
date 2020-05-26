@@ -17,4 +17,10 @@ class Movies extends AbstractController
         $db->execute();
         return $db->fetchAll();
     }
+    public function getProducers(): array
+    {
+        $db = \App\Models\Db::getDbh()->prepare('SELECT * FROM producers');
+        $db->execute();
+        return $db->fetchAll();
+    }
 }
