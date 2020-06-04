@@ -1,18 +1,19 @@
 document.addEventListener("DOMContentLoaded", function(event) {
-    const elm = document.getElementsByClassName("select");
+    const headers = document.getElementsByClassName("select");
 
-    [].forEach.call(elm, el => {
+    [].forEach.call(headers, el => {
         el.addEventListener("click", e => {
-            let list = $(e.currentTarget).find('option');
+            let list = $(e.currentTarget).next().find('ul');
 
             $.ajax({
                 type: "GET",
-                url: '/Movies/',
+                url: '/ProducerFilter',
                 data: {
-                    producer_id: e.currentTarget.value
+                    id: e.currentTarget.value
                 },
                 success: function(data) {
                     list.html(data);
+                    e.target.nextElementSibling.classList.toggle("hidden");
                 }
             });
         });

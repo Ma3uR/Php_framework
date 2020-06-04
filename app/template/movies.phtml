@@ -38,11 +38,23 @@ namespace App\template;?>
     <?php
     echo "<select class='select' name='producer_name'><option>Select a producer:</option>";
         foreach ($controller->getProducers() as $producer) {
-        echo "<option value='" . $producer['producer_id'] . "'>" . $producer['producer_name'] . '</option>';
+        echo "<option  value='" . $producer['producer_id'] . "'>" . $producer['producer_name'] . '</option>';
         }
         echo '</select>';
         ?>
 </form>
+
+<hr>
+
+<div class="budget">
+    <p>
+        <label for="amount">Budget range:</label>
+        <input type="text" id="amount">
+    </p>
+
+    <div id="slider-range"></div>
+</div>
+
 
 
 

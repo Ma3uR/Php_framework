@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace App\Controller;
 use App\View\Renderer;
-class Actors extends AbstractController
+class actorsController extends AbstractController
 {
     public function execute()
     {

@@ -1,8 +1,12 @@
 <?php
 declare(strict_types=1);
 namespace App\Controller;
+use App\View\Movies;
+use App\Models\Db;
 use App\View\Renderer;
-class Movies extends AbstractController
+use App\Services\ProducerFilterService;
+
+class MoviesController extends AbstractController
 {
     public function execute()
     {

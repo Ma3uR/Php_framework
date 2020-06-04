@@ -1,17 +1,24 @@
 <?php
-//declare(strict_types=1);
-//namespace App\Controller;
-//class Dispatcher
-//{
-//    public function dispatch(): void
-//    {
-//        if (isset($_SERVER['REQUEST_URI']) && ($controllerName = trim($_SERVER['REQUEST_URI'], '/'))) {
-//            $controllerClass = "\App\Controller\\" . ucfirst($controllerName);
-//        } else {
-//            $controllerClass = Movies::class;
-//        }
-//        $controller = new $controllerClass;
-//        $controller->execute();
-//    }
-//
-//}
+declare(strict_types=1);
+namespace App\Controller;
+use App\Controller\MoviesController;
+class Dispatcher
+{
+    public function dispatch(): void
+    {
+        $requestUri = $_SERVER['REQUEST_URI'] ? parse_url($_SERVER['REQUEST_URI'])['path'] : '';
+        $controllerName = $requestUri ? ucfirst(explode('/', trim($requestUri, '/'))[0]) : 'Index';
+
+        $controllerClass = "\App\Controller\\{$controllerName}Controller";
+
+        if (!class_exists($controllerClass)) {
+            $controllerClass = MoviesController::class;
+        }
+
+        $controller = new $controllerClass;
+
+        $response = $controller->execute();
+        echo $response;
+    }
+
+}
