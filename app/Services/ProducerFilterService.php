@@ -14,7 +14,7 @@ class ProducerFilterService
         SQL;
 
         if ($producerId) {
-            $sql .= 'where p.producer_id = :producerId;';
+            $sql .= ' where p.producer_id = :producerId;';
         }
 
         $dbh = Db::getDbh();
