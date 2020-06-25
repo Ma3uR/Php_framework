@@ -17,4 +17,10 @@ class actorsController extends AbstractController
         $db->execute();
         return $db->fetchAll();
     }
+    public function getCountries(): array
+    {
+        $db = \App\Models\Db::getDbh()->prepare('SELECT * FROM countries');
+        $db->execute();
+        return $db->fetchAll();
+    }
 }

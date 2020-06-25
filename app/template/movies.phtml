@@ -1,5 +1,4 @@
-<?php /** @var \App\Services\ProducerFilterService $controller */
-namespace App\template;?>
+<?php /** @var \App\Controller\MoviesController $controller */ ?>
 <menu class="nav">
     <li>
         <a href="/">Home Page</a>
@@ -9,7 +8,7 @@ namespace App\template;?>
     </li>
 </menu>
 <div class="content">
-    <table class="table">
+    <table id="table">
         <thead>
         <tr>
             <th>ID</th>
@@ -20,41 +19,31 @@ namespace App\template;?>
             <th>Producer id</th>
         </tr>
         </thead>
-        <tbody>
-        <?php foreach ($controller->getFilms() as $filmInfo) : ?>
-            <tr>
-                <td><?= $filmInfo['movies_id'] ?></td>
-                <td><?= $filmInfo['movies_title'] ?></td>
-                <td><?= $filmInfo['year_of_issue'] ?></td>
-                <td><?= $filmInfo['duration_min'] ?></td>
-                <td><?= $filmInfo['budget'] ?></td>
-                <td><?= $filmInfo['producer_id'] ?></td>
-            </tr>
-        <?php endforeach; ?>
-        </tbody>
+        <tbody id="movies-list"></tbody>
+        <script type="application/ecmascript">
+            $(function () {
+                $('#movies-list').moviesList({
+                    url: '/moviesList'
+                });
+            })
+        </script>
     </table>
 </div>
-<form id="column-select">
-    <?php
-    echo "<select class='select' name='producer_name'><option>Select a producer:</option>";
-        foreach ($controller->getProducers() as $producer) {
-        echo "<option  value='" . $producer['producer_id'] . "'>" . $producer['producer_name'] . '</option>';
-        }
-        echo '</select>';
-        ?>
+<form id="movie-filters" action="/">
+    <select class='select' name='producer_id'>
+        <option value="">Select a producer:</option>
+        <?php foreach ($controller->getProducers() as $producer) : ?>
+            <option value="<?= $producer['producer_id'] ?>"><?= $producer['producer_name'] ?></option>';
+        <?php endforeach; ?>
+    </select>
+
+    <hr>
+
+
 </form>
-
-<hr>
-
-<div class="budget">
-    <p>
-        <label for="amount">Budget range:</label>
-        <input type="text" id="amount">
-    </p>
-
-    <div id="slider-range"></div>
-</div>
-
+<div id="slider"></div>
+<br/>
+Range: <span id='range'></span>
 
 
 

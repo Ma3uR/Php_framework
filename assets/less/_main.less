@@ -51,7 +51,7 @@ a{
 	}
 
 }
-.table {
+#table {
 	border: 2px solid var(--primary-color);
 	padding: .2rem;
 	tr{
@@ -104,8 +104,8 @@ a{
 	justify-content: center;
 }
 
-#column-select{
-	.select{
+#movie-filters, #actors-filter {
+	.select {
 		padding: .5rem;
 		display: inline-block;
 		margin-top: 2rem;
@@ -114,7 +114,10 @@ a{
 		font-size: 1.2rem;
 	}
 }
-.select::selection{
+#actors-filter {
+	text-align: center;
+}
+.select::selection {
 	background-color: var(--primary-color);
 }
 .budget {

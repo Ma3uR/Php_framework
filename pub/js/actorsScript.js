@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     const headers = document.getElementsByClassName("select");
 });
 
-$.widget('am.moviesList', {
+$.widget('am.actorsList', {
     options: {
         url: ''
     },
@@ -10,30 +10,27 @@ $.widget('am.moviesList', {
     _create: function () {
         this.initValues();
         var markup = '<tr>' +
-            '<td>${movies_id}</td>' +
-            '<td>${movies_title}</td>' +
-            '<td>${year_of_issue}</td>' +
-            '<td>${duration_min}</td>' +
-            '<td>${budget}</td>' +
-            '<td>${producer_id}</td>' +
+            '<td>${actor_id}</td>' +
+            '<td>${first_name}${last_name}</td>' +
+            '<td>${dob}</td>' +
             '</tr>';
-        $.template('movieTemplate', markup);
-        this.filtersForm = document.getElementById('movie-filters');
-        $(this.filtersForm).find('input, select').change(this.getMovies.bind(this));
-        this.getMovies();
+        $.template('actorsTemplate', markup);
+        this.filtersForm = document.getElementById('actors-filter');
+        $(this.filtersForm).find('input, select').change(this.getActors.bind(this));
+        this.getActors();
     },
 
     initValues: function() {
         var urlParams = new URLSearchParams(window.location.search);
-        $('select[name="producer_id"]').val(urlParams.get('producer_id'));
+        $('select[name="country_id"]').val(urlParams.get('country_id'));
     },
 
-    getMovies: function () {
+    getActors: function () {
         var data = $(this.filtersForm).serialize();
 
         window.history.pushState(
             {
-                'producer_id': 2
+                'country_id': 2
             },
             window.title,
             'http://phpproject.local/?' + data
@@ -48,7 +45,7 @@ $.widget('am.moviesList', {
             success: function(data) {
                 if (data.length) {
                     // hide message, show table and render data
-                    $(this.element).html($.tmpl('movieTemplate', data));
+                    $(this.element).html($.tmpl('actorsTemplate', data));
                 } else {
                     // hide table, show message
                 }
@@ -56,5 +53,5 @@ $.widget('am.moviesList', {
         });
 
         this.element
-    }   
+    }
 })

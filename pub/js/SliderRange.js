@@ -1,13 +1,29 @@
-$( function() {
-    $( "#slider-range" ).slider({
+$(document).ready(function(){
+    // Initializing slider
+    $( "#slider" ).slider({
         range: true,
-        min: 6300000,
-        max: 200000000,
+        min: $minBudget,
+        max: $maxBudget,
         values: [ 6300000, 200000000 ],
         slide: function( event, ui ) {
-            $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+
+            // Get values
+            var min = ui.values[0];
+            var max = ui.values[1];
+            $('#range').text(min+' - ' + max);
+
+            // AJAX request
+            $.ajax({
+                url: '/moviesBudget',
+                type: 'post',
+                data: {min:min,max:max},
+                success: function(response){
+
+                    // Updating table data
+                    $('#movies-list tr:not(:first)').remove();
+                    $('#movies-list').append(response);
+                }
+            });
         }
     });
-    $( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
-        " - $" + $( "#slider-range" ).slider( "values", 1 ) );
-} );
+});
