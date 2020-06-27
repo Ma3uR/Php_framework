@@ -20,7 +20,8 @@ class MoviesListController extends AbstractController
 //            join producers as p on  p.producer_id = movies.producer_id
 //            WHERE m.budget >= :current_min_budget AND m.budget <=
 //        SQL;
-
+        $minBudet = $_POST['min'];
+        $maxBudet = $_POST['max'];
         $sql = <<<SQL
         SELECT *
         FROM movies
@@ -30,12 +31,16 @@ class MoviesListController extends AbstractController
         if ($producerId = $this->getProducerId()) {
             $sql .= ' WHERE p.producer_id = :producerId;';
         }
+        if ($minBudet && $maxBudet) {
+            $sql .= ' AND budget>= :minBudet  AND budget<= :maxBudget;';
+        }
 
 
         $dbh = Db::getDbh();
         $stmt = $dbh->prepare($sql);
         $stmt->bindValue(':producerId', $producerId, \PDO::PARAM_INT);
-
+        $stmt->bindValue(':minBudet', $minBudet, \PDO::PARAM_INT);
+        $stmt->bindValue(':maxBudet', $maxBudet, \PDO::PARAM_INT);
         $stmt->execute();
         $movies = $stmt->fetchAll();
         header('Content-Type: application/json');
@@ -51,24 +56,4 @@ class MoviesListController extends AbstractController
             ? (int) $_REQUEST['producer_id']
             : 0;
     }
-
-//    public function findAllMovies(int $producerId = 0)
-//    {
-//        $sql = <<<SQL
-//        select *
-//        from movies
-//            join producers as p on  p.producer_id = movies.movies_id
-//        SQL;
-//
-//        if ($producerId) {
-//            $sql .= 'where p.producer_id = :producerId;';
-//        }
-//
-//        $dbh = Db::getDbh();
-//        $stmt = $dbh->prepare($sql);
-//        $stmt->bindValue(':producerId', $producerId, \PDO::PARAM_INT);
-//
-//        $stmt->execute();
-//        return $stmt->fetchAll(\PDO::FETCH_CLASS, \App\Models\ProducerFilter::class);
-//    }
 }

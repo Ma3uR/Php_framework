@@ -1,9 +1,11 @@
 $(document).ready(function(){
+    var minBudget = $( "#slider" ).data('min-budget');
+    var maxBudget = $( "#slider" ).data('max-budget');
     // Initializing slider
     $( "#slider" ).slider({
         range: true,
-        min: $minBudget,
-        max: $maxBudget,
+        min: minBudget,
+        max: maxBudget,
         values: [ 6300000, 200000000 ],
         slide: function( event, ui ) {
 

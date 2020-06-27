@@ -11,26 +11,26 @@ class MoviesController extends AbstractController
     public function getMinBudget()
     {
         $sql = <<<SQL
-         select MIN(budget)      
+         select MIN(budget)
          from movies
         SQL;
         $dbh = Db::getDbh();
         $stmt = $dbh->prepare($sql);
         $stmt->execute();
-        $minBudget = $stmt->fetchAll();
-        return $minBudget;
+        $result = $stmt->fetch(\PDO::FETCH_NUM);
+        return $result ? $result[0] : null;
     }
     public function getMaxBudget()
     {
         $sql = <<<SQL
-         select MAX(budget)      
+         select MAX(budget)
          from movies
         SQL;
         $dbh = Db::getDbh();
         $stmt = $dbh->prepare($sql);
         $stmt->execute();
-        $maxBudget = $stmt->fetchAll();
-        return $maxBudget;
+        $result = $stmt->fetch(\PDO::FETCH_NUM);
+        return $result ? $result[0] : null;
 
     }
     public function getCurrentMaxBudget()
