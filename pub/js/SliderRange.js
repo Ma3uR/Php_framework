@@ -1,11 +1,10 @@
 $(document).ready(function(){
-    var minBudget = $( "#slider" ).data('min-budget');
-    var maxBudget = $( "#slider" ).data('max-budget');
     // Initializing slider
     $( "#slider" ).slider({
         range: true,
-        min: minBudget,
-        max: maxBudget,
+        step:100000,
+        min: 6300000,
+        max: 200000000,
         values: [ 6300000, 200000000 ],
         slide: function( event, ui ) {
 
@@ -16,8 +15,8 @@ $(document).ready(function(){
 
             // AJAX request
             $.ajax({
-                url: '/moviesBudget',
-                type: 'post',
+                url: '/moviesList',
+                type: 'GET',
                 data: {min:min,max:max},
                 success: function(response){
 

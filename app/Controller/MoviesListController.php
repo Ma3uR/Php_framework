@@ -13,35 +13,37 @@ class MoviesListController extends AbstractController
 {
     public function execute()
     {
-//        $currentMinBudget = $this->getCurrentMinBudget();
-//        $sql = <<<SQL
-//        select *
-//        from movies
-//            join producers as p on  p.producer_id = movies.producer_id
-//            WHERE m.budget >= :current_min_budget AND m.budget <=
-//        SQL;
-        $minBudet = $_POST['min'];
-        $maxBudet = $_POST['max'];
         $sql = <<<SQL
         SELECT *
         FROM movies
-            INNER JOIN producers AS p ON p.producer_id = movies.producer_id
+            INNER JOIN producers AS p ON p.producer_id = movies.producer_id  
         SQL;
 
+        $where = [];
+        $params = [];
+
         if ($producerId = $this->getProducerId()) {
-            $sql .= ' WHERE p.producer_id = :producerId;';
+            $where[] = 'WHERE p.producer_id = :producerId';
+            $params[':producerId'] = $producerId;
         }
-        if ($minBudet && $maxBudet) {
-            $sql .= ' AND budget>= :minBudet  AND budget<= :maxBudget;';
+        if ($minBudget = $this->getMinValue()) {
+            $where[] = 'WHERE budget >= :min_budget';
+            $params[':min_budget'] = $minBudget;
         }
+        if ($maxBudget = $this->getMaxValue()) {
+            $where[] = 'budget <= :max_budget';
+            $params[':max_budget'] = $maxBudget;
+        }
+
+        if (count($where)) {
+            $sql .= implode(' AND ', $where);
+        };
 
 
         $dbh = Db::getDbh();
         $stmt = $dbh->prepare($sql);
-        $stmt->bindValue(':producerId', $producerId, \PDO::PARAM_INT);
-        $stmt->bindValue(':minBudet', $minBudet, \PDO::PARAM_INT);
-        $stmt->bindValue(':maxBudet', $maxBudet, \PDO::PARAM_INT);
-        $stmt->execute();
+        $stmt->execute($params);
+
         $movies = $stmt->fetchAll();
         header('Content-Type: application/json');
         echo json_encode($movies);
@@ -54,6 +56,20 @@ class MoviesListController extends AbstractController
     {
         return isset($_REQUEST['producer_id'])
             ? (int) $_REQUEST['producer_id']
+            : 0;
+    }
+
+    public function getMinValue(): int
+    {
+        return isset($_REQUEST['min'])
+            ? (int) $_REQUEST['min']
+            : 0;
+    }
+
+    public function getMaxValue(): int
+    {
+        return isset($_REQUEST['max'])
+            ? (int) $_REQUEST['max']
             : 0;
     }
 }

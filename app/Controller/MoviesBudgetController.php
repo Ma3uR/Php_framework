@@ -13,7 +13,7 @@ class MoviesBudgetController extends AbstractController
         $maxBudet = $_POST['max'];
         $sql = <<<SQL
         SELECT budget
-        FROM movies
+        FROM movies 
             
         SQL;
 
