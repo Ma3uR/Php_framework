@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: mysql56
--- Час створення: Квт 22 2020 р., 10:57
+-- Час створення: Лип 06 2020 р., 07:39
 -- Версія сервера: 5.6.47
 -- Версія PHP: 7.4.1
 
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- База даних: `DV task data base`
+-- База даних: `DV_task_data_base`
 --
 
 -- --------------------------------------------------------
@@ -29,30 +29,31 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `actors` (
-  `actors_id` int(11) NOT NULL,
+  `actor_id` int(11) NOT NULL,
   `first_name` varchar(25) NOT NULL,
   `last_name` varchar(25) DEFAULT NULL,
-  `dob` date NOT NULL
+  `dob` date NOT NULL,
+  `country_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Дамп даних таблиці `actors`
 --
 
-INSERT INTO `actors` (`actors_id`, `first_name`, `last_name`, `dob`) VALUES
-(1, 'William John', 'Neeson', '1952-06-07'),
-(2, 'Ewan Gordon', 'McGregor', '1971-05-21'),
-(3, 'Natalie', 'Portman', '1981-06-09'),
-(4, 'Leonardo Wilhelm', 'DiCaprio', '1974-02-11'),
-(5, 'Kate Elizabeth', 'Winslet', '1975-10-05'),
-(6, 'William George', 'Zane Jr', '1966-02-15'),
-(7, 'Nigel John Dermot', 'Neill', '1947-08-25'),
-(8, 'Laura Elizabeth', 'Dern', '1967-05-10'),
-(9, 'Jeffrey Lynn', 'Goldblum', '1952-11-02'),
-(10, 'Lauren Christine', 'German', '1978-05-11'),
-(11, 'Bijou Lilly', 'Phillips', '1980-04-01'),
-(12, 'Jay', 'Hernandez', '1978-02-05'),
-(13, 'Conor', 'McGregor', '1988-06-04');
+INSERT INTO `actors` (`actor_id`, `first_name`, `last_name`, `dob`, `country_id`) VALUES
+(1, 'William John', 'Neeson', '1952-06-07', 1),
+(2, 'Ewan Gordon', 'McGregor', '1971-05-21', 2),
+(3, 'Natalie', 'Portman', '1981-06-09', 1),
+(4, 'Leonardo Wilhelm', 'DiCaprio', '1974-02-11', 2),
+(5, 'Kate Elizabeth', 'Winslet', '1975-10-05', 1),
+(6, 'William George', 'Zane Jr', '1966-02-15', 1),
+(7, 'Nigel John Dermot', 'Neill', '1947-08-25', 1),
+(8, 'Laura Elizabeth', 'Dern', '1967-05-10', 1),
+(9, 'Jeffrey Lynn', 'Goldblum', '1952-11-02', 2),
+(10, 'Lauren Christine', 'German', '1978-05-11', 1),
+(11, 'Bijou Lilly', 'Phillips', '1980-04-01', 1),
+(12, 'Jay', 'Hernandez', '1978-02-05', 1),
+(13, 'Conor', 'McGregor', '1988-06-04', 3);
 
 -- --------------------------------------------------------
 
@@ -88,6 +89,27 @@ INSERT INTO `actors_fee` (`actors_fee_id`, `movie_id`, `actor_id`, `fee`) VALUES
 (14, 5, 2, 3000000),
 (15, 6, 4, 5000000),
 (16, 6, 5, 5000000);
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблиці `countries`
+--
+
+CREATE TABLE `countries` (
+  `country_id` int(11) NOT NULL,
+  `country_name` varchar(60) NOT NULL,
+  `mainland` varchar(60) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп даних таблиці `countries`
+--
+
+INSERT INTO `countries` (`country_id`, `country_name`, `mainland`) VALUES
+(1, 'US', 'North America'),
+(2, 'Canada', 'North America'),
+(3, 'Ireland', 'Europe');
 
 -- --------------------------------------------------------
 
@@ -173,7 +195,8 @@ INSERT INTO `studios` (`studios_id`, `studios_title`, `foundation_date`) VALUES
 -- Індекси таблиці `actors`
 --
 ALTER TABLE `actors`
-  ADD PRIMARY KEY (`actors_id`);
+  ADD PRIMARY KEY (`actor_id`),
+  ADD KEY `country_id` (`country_id`);
 
 --
 -- Індекси таблиці `actors_fee`
@@ -182,6 +205,12 @@ ALTER TABLE `actors_fee`
   ADD PRIMARY KEY (`actors_fee_id`),
   ADD KEY `movie_id` (`movie_id`),
   ADD KEY `actor_id` (`actor_id`);
+
+--
+-- Індекси таблиці `countries`
+--
+ALTER TABLE `countries`
+  ADD PRIMARY KEY (`country_id`);
 
 --
 -- Індекси таблиці `movies`
@@ -211,13 +240,19 @@ ALTER TABLE `studios`
 -- AUTO_INCREMENT для таблиці `actors`
 --
 ALTER TABLE `actors`
-  MODIFY `actors_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `actor_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT для таблиці `actors_fee`
 --
 ALTER TABLE `actors_fee`
   MODIFY `actors_fee_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
+-- AUTO_INCREMENT для таблиці `countries`
+--
+ALTER TABLE `countries`
+  MODIFY `country_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT для таблиці `movies`
@@ -242,11 +277,17 @@ ALTER TABLE `studios`
 --
 
 --
+-- Обмеження зовнішнього ключа таблиці `actors`
+--
+ALTER TABLE `actors`
+  ADD CONSTRAINT `actors_ibfk_1` FOREIGN KEY (`country_id`) REFERENCES `countries` (`country_id`);
+
+--
 -- Обмеження зовнішнього ключа таблиці `actors_fee`
 --
 ALTER TABLE `actors_fee`
   ADD CONSTRAINT `actors_fee_ibfk_1` FOREIGN KEY (`movie_id`) REFERENCES `movies` (`movies_id`),
-  ADD CONSTRAINT `actors_fee_ibfk_2` FOREIGN KEY (`actor_id`) REFERENCES `actors` (`actors_id`);
+  ADD CONSTRAINT `actors_fee_ibfk_2` FOREIGN KEY (`actor_id`) REFERENCES `actors` (`actor_id`);
 
 --
 -- Обмеження зовнішнього ключа таблиці `movies`
