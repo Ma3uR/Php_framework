@@ -16,29 +16,29 @@ class MoviesListController extends AbstractController
         $sql = <<<SQL
         SELECT *
         FROM movies
-            INNER JOIN producers AS p ON p.producer_id = movies.producer_id  
+            INNER JOIN producers AS p ON p.producer_id = movies.producer_id
+            WHERE 
         SQL;
 
         $where = [];
         $params = [];
 
         if ($producerId = $this->getProducerId()) {
-            $where[] = 'WHERE p.producer_id = :producerId';
-            $params[':producerId'] = $producerId;
+            $where[] = 'p.producer_id = :producerId';
+            $params['producerId'] = $producerId;
         }
         if ($minBudget = $this->getMinValue()) {
-            $where[] = 'WHERE budget >= :min_budget';
-            $params[':min_budget'] = $minBudget;
+            $where[] = 'budget >= :min_budget';
+            $params['min_budget'] = $minBudget;
         }
         if ($maxBudget = $this->getMaxValue()) {
             $where[] = 'budget <= :max_budget';
-            $params[':max_budget'] = $maxBudget;
+            $params['max_budget'] = $maxBudget;
         }
 
         if (count($where)) {
             $sql .= implode(' AND ', $where);
-        };
-
+        }
 
         $dbh = Db::getDbh();
         $stmt = $dbh->prepare($sql);
@@ -61,15 +61,15 @@ class MoviesListController extends AbstractController
 
     public function getMinValue(): int
     {
-        return isset($_REQUEST['min'])
-            ? (int) $_REQUEST['min']
+        return isset($_REQUEST['min_budget'])
+            ? (int) $_REQUEST['min_budget']
             : 0;
     }
 
     public function getMaxValue(): int
     {
-        return isset($_REQUEST['max'])
-            ? (int) $_REQUEST['max']
+        return isset($_REQUEST['max_budget'])
+            ? (int) $_REQUEST['max_budget']
             : 0;
     }
 }
